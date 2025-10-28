@@ -9,7 +9,7 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class User {
-    private UUID Id;
+    private UUID id;
     private String username;
     private String password;
     private String email;
@@ -19,5 +19,15 @@ public class User {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-    
+    public UUID getId(){
+        return this.id;
+    }
+
+    public void setId(UUID id){
+        this.id=id;
+    }
+    public 
+
+
+
 }
