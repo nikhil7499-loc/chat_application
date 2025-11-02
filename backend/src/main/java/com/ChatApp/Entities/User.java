@@ -1,58 +1,80 @@
 package com.ChatApp.Entities;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "UUID", updatable = false, nullable = false)
-    private UUID id;
+    @Column(length = 36, nullable = false, updatable = false)
+    private String id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 256)
     private String username;
 
-    @Column(nullable = false)
-    private String password;
+    @Column(nullable = false, length = 256)
+    private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 256)
     private String email;
 
-    private Date date_of_birth;
-    private String gender;
+    @Column(nullable = false, length = 256)
+    private String password;
+
+    @Column(length = 128)
     private String profile_picture;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+
+    @Column(nullable = false)
+    private LocalDate date_of_birth;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
+    private Gender gender;
+
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    private Instant created_at;
+
+    @Column(columnDefinition = "TIMESTAMP")
+    private Instant updated_at;
 
     @PrePersist
     protected void onCreate() {
-        created_at = LocalDateTime.now();
-        updated_at = LocalDateTime.now();
+        if (this.id == null) {
+            this.id = UUID.randomUUID().toString();
+        }
+        Instant nowUtc = Instant.now();
+        this.created_at = nowUtc;
+        this.updated_at = nowUtc;
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updated_at = LocalDateTime.now();
+        this.updated_at = Instant.now();
     }
 
-    public UUID getId() {
+    public enum Gender {
+        male,
+        female,
+        other
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -64,12 +86,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -80,20 +102,12 @@ public class User {
         this.email = email;
     }
 
-    public Date getDate_of_birth() {
-        return date_of_birth;
+    public String getPassword() {
+        return password;
     }
 
-    public void setDate_of_birth(Date date_of_birth) {
-        this.date_of_birth = date_of_birth;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getProfile_picture() {
@@ -104,19 +118,35 @@ public class User {
         this.profile_picture = profile_picture;
     }
 
-    public LocalDateTime getCreated_at() {
+    public LocalDate getDate_of_birth() {
+        return date_of_birth;
+    }
+
+    public void setDate_of_birth(LocalDate date_of_birth) {
+        this.date_of_birth = date_of_birth;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Instant getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
+    public void setCreated_at(Instant created_at) {
         this.created_at = created_at;
     }
 
-    public LocalDateTime getUpdated_at() {
+    public Instant getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at(LocalDateTime updated_at) {
+    public void setUpdated_at(Instant updated_at) {
         this.updated_at = updated_at;
     }
 }
