@@ -12,6 +12,8 @@ import com.ChatApp.Models.Responses.UserResponses;
 import com.ChatApp.Security.IsAuthenticatedUser;
 import com.ChatApp.Security.CurrentUser;
 
+import java.util.Map;
+
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.time.LocalDate;
@@ -63,7 +65,10 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody UserRequests.LoginRequest req, HttpServletResponse response) {
         try {
             String token = authBal.login(req.getEmailOrUsername(), req.getPassword(), response);
-            return ResponseEntity.ok("Login successful. Token set in cookie.");
+            return ResponseEntity.ok(Map.of(
+                "message", "Login successful",
+                "token", token
+            ));
         } catch (UnauthorizedException e) {
             return ResponseEntity.status(401).body(e.getMessage());
         } catch (Exception e) {

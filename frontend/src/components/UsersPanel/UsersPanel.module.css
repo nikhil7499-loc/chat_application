@@ -1,0 +1,377 @@
+.panelContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 300px;
+  border-right: 1px solid #e0e0e0;
+  background: #fff;
+}
+
+/* 🔹 Top Filter Bar */
+.filterBar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  background: #fafafa;
+}
+
+.filterButton {
+  flex: 1;
+  text-align: center;
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  padding: 0.4rem 0;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s, background 0.2s;
+  border-radius: 8px;
+}
+
+.filterButton:hover {
+  background: #eef4ff;
+  color: #007bff;
+}
+
+.activeFilter {
+  background: #007bff;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 🔹 Scrollable Users List */
+.usersList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem;
+}
+
+.userItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  position: relative;
+}
+
+.userItem:hover {
+  background: #f0f4ff;
+}
+
+.active {
+  background: #e7f0ff;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background: #007bff;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.username {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #222;
+}
+
+.lastMessage {
+  font-size: 0.85rem;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.notificationDot {
+  width: 10px;
+  height: 10px;
+  background: #ff4444;
+  border-radius: 50%;
+  position: absolute;
+  right: 10px;
+}
+
+.emptyText {
+  text-align: center;
+  color: #777;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+}/* 🔹 Bottom Search Bar */
+.searchBox {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.75rem;
+  gap: 0.5rem;
+  border-top: 1px solid #e5e5e5;
+  background: #f8f9fa;
+  z-index: 5;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  font-size: 0.9rem;
+  background: #fff;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* 🔹 Hamburger Menu */
+.menuContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: none;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  font-size: 1.3rem;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menuButton:hover {
+  background: #f0f4ff;
+  color: #007bff;
+  transform: scale(1.05);
+}
+
+/* 🔹 Dropdown Popup */
+.menuPopup {
+  position: absolute;
+  bottom: 48px;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  padding: 0.4rem 0;
+  z-index: 20;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.15s ease;
+}
+
+.menuPopup button {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.menuPopup button:hover {
+  background: #f5f7ff;
+  color: #007bff;
+}
+
+/* 🔹 Smooth Popup Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+.searchInput {
+  flex: 1;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.searchInput:focus {
+  border-color: #007bff;
+}
+
+.searchButton:hover {
+  background: #0056b3;
+}
+
+
+.logoutContainer {
+  padding: 0.5rem 1rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: center;
+  background: #fafafa;
+}
+
+.logoutButton {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+  width: 100%;
+}
+
+.logoutButton:hover {
+  background: #b52a38;
+}
+
+
+.onlineUser {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.avatar {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #007bff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.onlineDot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #28a745;
+  border: 2px solid white;
+}
+
+.filterBar {
+  display: flex;
+  overflow-x: auto;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #eee;
+  scrollbar-width: none; /* hide scrollbar for Firefox */
+}
+
+.filterBar::-webkit-scrollbar {
+  display: none; /* hide scrollbar for Chrome/Safari */
+}
+
+.filterButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #f1f1f1;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.filterButton:hover {
+  background: #e0e0e0;
+}
+
+.activeFilter {
+  background: #007bff;
+  color: white;
+  font-weight: 600;
+}
+
+.logoutContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid #eee;
+}
+
+.logoutButton {
+  background: transparent;
+  border: none;
+  color: #555;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.1s ease;
+}
+
+.logoutButton:hover {
+  color: #d9534f;
+  transform: scale(1.1);
+}
+
+.userInfoPopup {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 0.3rem;
+}
+
+.profileImage {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f5f5f5;
+}
+
+.popupName {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

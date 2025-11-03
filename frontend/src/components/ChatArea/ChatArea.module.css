@@ -1,0 +1,328 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background: #f7f9fc;
+}
+
+/* header */
+.header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e7ecf3;
+  background: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.userBadge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #007bff;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarLetter {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.onlineDot {
+  position: absolute;
+  right: 3px;
+  bottom: 2px;
+  width: 10px;
+  height: 10px;
+  background: #28a745;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #222;
+}
+
+.status {
+  font-size: 0.82rem;
+  color: #666;
+}
+
+/* messages list */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.messageRow {
+  display: flex;
+}
+
+.incoming {
+  justify-content: flex-start;
+}
+
+.outgoing {
+  justify-content: flex-end;
+}
+
+.messageBubble {
+  max-width: 70%;
+  background: #fff;
+  padding: 10px 12px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(25, 45, 80, 0.04);
+  color: #111;
+  position: relative;
+}
+
+.outgoing .messageBubble {
+  background: #3bb7d6;
+  color: white;
+}
+
+.incoming .messageBubble{
+    background-color: #5dd77a;
+    color: white;
+}
+    
+.messageText {
+  white-space: pre-wrap;
+}
+
+.messageTime {
+  font-size: 0.72rem;
+  color: rgba(0,0,0,0.45);
+  margin-top: 8px;
+  text-align: right;
+}
+
+/* composer */
+.composer {
+  padding: 10px;
+  border-top: 1px solid #e7ecf3;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #fff;
+}
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between; /* Make sure send button is at the end */
+}
+
+.input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d6dbe2;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.sendBtn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px; /* slightly larger for better balance */
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease-in-out;
+  margin-left: auto; /* 👈 ensures it sticks to the right end */
+}
+
+.sendBtn:hover {
+  background: #0069d9;
+}
+
+.sendBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+.attachBtn {
+  background: transparent;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* hidden native file input */
+.fileInput {
+  display: none;
+}
+
+/* file preview */
+.filePreview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff8ea;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #f0e0b8;
+  margin-bottom: 4px;
+}
+
+.fileName {
+  font-size: 0.9rem;
+  color: #6b4a00;
+}
+
+.removeFile {
+  background: transparent;
+  border: none;
+  color: #6b4a00;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+
+.messageMeta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 2px;
+}
+
+.singleTick {
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.doubleTick {
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.doubleTickRead {
+  color: #0a84ff; /* iMessage blue */
+  font-size: 0.85rem;
+}
+
+
+.emptyState {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f9fc;
+  height: 100vh;
+  color: #555;
+  text-align: center;
+}
+
+.emptyInner {
+  max-width: 400px;
+  padding: 2rem;
+}
+
+.emptyIcon {
+  width: 120px;
+  height: 120px;
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+.emptyState h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.emptyState p {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* Message Type Dropdown */
+.typeSelect {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #d6dbe2;
+  background-color: #f9fafc;
+  font-size: 0.9rem;
+  color: #333;
+  width: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.typeSelect:hover {
+  background-color: #eef3f9;
+  border-color: #b8c4d1;
+}
+
+.typeSelect:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+/* Keep it compact inside composer controls */
+.controls .typeSelect {
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+/* Optional: style dropdown options */
+.typeSelect option {
+  padding: 6px 10px;
+}
+
+
+/* For caption input below a file before sending */
+.captionInput {
+  flex: 1;
+  border: 1px solid #d6dbe2;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  outline: none;
+  margin-top: 4px;
+}
+
+/* For caption text shown under image/video/file in chat */
+.captionText {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  color: #333;
+  line-height: 1.3;
+  word-break: break-word;
+}
