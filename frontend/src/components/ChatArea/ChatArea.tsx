@@ -1,309 +1,288 @@
-import React, { useEffect, useRef, useState } from "react";
-import styles from "./ChatArea.module.css";
+import { useEffect, useRef, useState } from "react";
+import { useMessageContext } from "../../context/MessageContext";
 import { useUserContext } from "../../context/UserContext";
 import { useMessageTypesContext } from "../../context/MessageTypeContext";
-import { BiArrowFromLeft, BiArrowFromTop } from "react-icons/bi";
-import { FaEye } from "react-icons/fa";
-import logoSvg from "../../assets/logo.svg";
-
-export interface ChatUser {
-  id: string;
-  username: string;
-  profilePicture?: string | null;
-  isOnline?: boolean;
-}
-
-export interface ChatMessage {
-  id: string;
-  fromSelf?: boolean;
-  text?: string; // includes caption or plain text
-  time?: string;
-  fileName?: string;
-  status?: "sent" | "delivered" | "read";
-  typeId?: number;
-}
+import styles from "./ChatArea.module.css";
+import { API_BASE_URL } from "../../services/base";
 
 interface ChatAreaProps {
-  activeUser?: ChatUser | null;
-  initialMessages?: ChatMessage[];
-  onSend?: (msg: { text?: string; file?: File | null; typeId: number }) => Promise<void> | void;
+  selectedUserId: string | null;
+  selectedUsername?: string;
 }
 
-export default function ChatArea({
-  activeUser = null,
-  initialMessages = [],
-  onSend,
-}: ChatAreaProps) {
-  const { getProfilePictureUrl } = useUserContext();
-  const { messageTypes, loading: msgTypeLoading } = useMessageTypesContext();
+export default function ChatArea({ selectedUserId, selectedUsername }: ChatAreaProps) {
+  const { user } = useUserContext();
+  const {
+    messages,
+    getDirectMessages,
+    sendMessage,
+    markDeliveredServer,
+    markReadServer,   // ✅ NEW
+    loading,
+    error,
+  } = useMessageContext();
 
-  const [messages, setMessages] = useState<ChatMessage[]>(
-    initialMessages.length
-      ? initialMessages
-      : [
-          { id: "m1", fromSelf: false, text: "Hey! 👋", time: "10:01 AM" },
-          { id: "m2", fromSelf: true, text: "Hi — how's it going?", time: "10:02 AM", status: "read" },
-        ]
-  );
+  const { messageTypes, loading: typesLoading, error: typesError } =
+    useMessageTypesContext();
 
-  const [text, setText] = useState("");
+  const [chatMessages, setChatMessages] = useState(messages);
+  const [input, setInput] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [caption, setCaption] = useState(""); // 👈 NEW: caption input
-  const [sending, setSending] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
-  const [selectedTypeId, setSelectedTypeId] = useState<number>(1);
+  const [caption, setCaption] = useState("");
+  const [messageType, setMessageType] = useState("text");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
-  const listRef = useRef<HTMLDivElement | null>(null);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const profilePictureSrc = activeUser?.profilePicture
-    ? getProfilePictureUrl(activeUser.profilePicture)
-    : getProfilePictureUrl("default-avatar.png");
-
+  /** ✅ Load messages AND mark them delivered */
   useEffect(() => {
-    const el = listRef.current;
-    if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
-  }, [messages]);
+    if (!selectedUserId) return;
 
-  // Simulated typing
+    void (async () => {
+      const msgs = await getDirectMessages(selectedUserId);
+      setChatMessages(msgs);
+
+      // ✅ When you open a chat => mark all messages from THEM as delivered
+      await markDeliveredServer(selectedUserId);
+    })();
+  }, [selectedUserId]);
+
+  /** ✅ Mark messages as READ when new incoming messages appear */
   useEffect(() => {
-    if (!activeUser) return;
-    const typingInterval = setInterval(() => {
-      setIsTyping(true);
-      setTimeout(() => {
-        setIsTyping(false);
-        const reply: ChatMessage = {
-          id: `auto-${Date.now()}`,
-          fromSelf: false,
-          text: ["That's cool 😎", "Really?", "Tell me more!", "Haha!", "😂"][
-            Math.floor(Math.random() * 5)
-          ],
-          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        };
-        setMessages((m) => [...m, reply]);
-      }, 3000);
-    }, 15000);
-    return () => clearInterval(typingInterval);
-  }, [activeUser]);
+    if (!selectedUserId) return;
 
-  const selectedType = messageTypes.find((t) => t.id === selectedTypeId);
+    const hasUnread = chatMessages.some(
+      (m) => m.sender.id === selectedUserId && !m.readAt
+    );
 
-  const handleSend = async () => {
-    const isText = selectedType?.name === "text";
-
-    if (isText && !text.trim()) return;
-    if (!isText && !file) return;
-
-    const payload = {
-      text: isText ? text.trim() : caption.trim() || undefined,
-      file: !isText ? file : null,
-      typeId: selectedTypeId,
-    };
-
-    const next: ChatMessage = {
-      id: `m-${Date.now()}`,
-      fromSelf: true,
-      text: payload.text,
-      fileName: payload.file?.name,
-      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-      status: "sent",
-      typeId: selectedTypeId,
-    };
-
-    setMessages((m) => [...m, next]);
-    setText("");
-    setCaption("");
-    setFile(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-
-    // Simulate delivery and read
-    setTimeout(() => {
-      setMessages((prev) =>
-        prev.map((msg) => (msg.id === next.id ? { ...msg, status: "delivered" } : msg))
-      );
-    }, 2000);
-    setTimeout(() => {
-      setMessages((prev) =>
-        prev.map((msg) => (msg.id === next.id ? { ...msg, status: "read" } : msg))
-      );
-    }, 5000);
-
-    if (onSend) {
-      try {
-        setSending(true);
-        await onSend(payload);
-      } finally {
-        setSending(false);
-      }
+    if (hasUnread) {
+      // ✅ Tell server messages are read
+      void markReadServer(selectedUserId);
     }
+  }, [chatMessages, selectedUserId]);
+
+  /** 🔹 Auto scroll */
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessages]);
+
+  /** ✅ Allowed extensions */
+  const allowedExtensions = messageTypes.find(
+    (t) => t.name.toLowerCase() === messageType
+  )?.allowedExtensions;
+
+  const isValidFile = (filename: string) => {
+    if (!allowedExtensions) return true;
+    const ext = filename.split(".").pop()?.toLowerCase();
+    return allowedExtensions.split(",").map((x) => x.trim()).includes(ext || "");
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const f = e.target.files?.[0] ?? null;
-    if (!f || !selectedType?.allowedExtensions) return;
+    const selected = e.target.files?.[0];
+    if (!selected) return;
 
-    const allowed = selectedType.allowedExtensions.split(",").map((x) => x.trim().toLowerCase());
-    const ext = f.name.split(".").pop()?.toLowerCase();
-    if (!ext || !allowed.includes(ext)) {
-      alert(`Invalid file type. Allowed: ${allowed.join(", ")}`);
-      e.target.value = "";
+    if (!isValidFile(selected.name)) {
+      alert("This file type is not allowed for selected message type.");
       return;
     }
-    setFile(f);
+
+    setFile(selected);
   };
 
-  const renderStatus = (status?: string) => {
-    if (!status) return null;
-    if (status === "sent") return <span className={styles.singleTick}><BiArrowFromLeft /></span>;
-    if (status === "delivered") return <span className={styles.doubleTick}><BiArrowFromTop /></span>;
-    if (status === "read") return <span className={styles.doubleTickRead}><FaEye /></span>;
+  /** ✅ Send message */
+  const handleSend = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedUserId) return;
+    if (messageType === "text" && !input.trim()) return;
+    if (messageType !== "text" && !file) return;
+
+    try {
+      const requestPayload = {
+        receiverId: selectedUserId,
+        groupId: null,
+        replyToMessageId: null,
+        caption: caption || "",
+        type: messageType,
+        content: messageType === "text" ? input.trim() : caption,
+      };
+
+      const sent = await sendMessage(requestPayload, file);
+
+      setChatMessages((prev) => [...prev, sent]);
+
+      setInput("");
+      setCaption("");
+      setFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (err) {
+      console.error("Send failed", err);
+    }
   };
 
-  if (msgTypeLoading) {
+  if (!selectedUserId) {
     return (
       <div className={styles.emptyState}>
         <div className={styles.emptyInner}>
-          <img src={logoSvg} alt="ChatApp" className={styles.emptyIcon} />
-          <h3>Loading message types...</h3>
+          <img src="/chat-empty.svg" alt="No chat" className={styles.emptyIcon} />
+          <h2>No Chat Selected</h2>
+          <p>Select a user from the left panel to start messaging.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <>
-      {!activeUser ? (
-        <div className={styles.emptyState}>
-          <div className={styles.emptyInner}>
-            <img src={logoSvg} alt="Chat illustration" className={styles.emptyIcon} />
-            <h2>Welcome to ChatApp</h2>
-            <p>Select a conversation from the sidebar to start chatting.</p>
+    <div className={styles.container}>
+      
+      {/* Header */}
+      <div className={styles.header}>
+        <div className={styles.userBadge}>
+          <div className={styles.avatar}>
+            {selectedUsername?.charAt(0).toUpperCase()}
+            <div className={styles.onlineDot}></div>
+          </div>
+          <div className={styles.userInfo}>
+            <div className={styles.username}>{selectedUsername}</div>
+            <div className={styles.status}>Online</div>
           </div>
         </div>
-      ) : (
-        <div className={styles.container}>
-          <header className={styles.header}>
-            <div className={styles.userBadge}>
-              <div className={styles.avatar}>
-                <img
-                  src={profilePictureSrc}
-                  alt={activeUser.username}
-                  onError={(ev) =>
-                    (ev.currentTarget.src = getProfilePictureUrl("default-avatar.png"))
-                  }
-                />
-                {activeUser.isOnline && <span className={styles.onlineDot}></span>}
-              </div>
-              <div className={styles.userInfo}>
-                <div className={styles.username}>{activeUser.username}</div>
-                <div className={styles.status}>
-                  {isTyping ? "Typing..." : activeUser.isOnline ? "Online" : "Offline"}
+      </div>
+
+      {/* Messages */}
+      <div className={styles.messages}>
+        {loading ? (
+          <p>Loading messages...</p>
+        ) : error ? (
+          <p style={{ color: "red" }}>{error}</p>
+        ) : chatMessages.length === 0 ? (
+          <p>No messages yet. Say hello 👋</p>
+        ) : (
+          chatMessages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`${styles.messageRow} ${
+                msg.sender.id === user?.id ? styles.outgoing : styles.incoming
+              }`}
+            >
+              <div className={styles.messageBubble}>
+                {msg.type !== "text" && (
+                  <a
+                    href={`${API_BASE_URL}/api/messages/file/${msg.id}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.mediaLink}
+                  >
+                    📎 Download file
+                  </a>
+                )}
+
+                {msg.type === "text" && (
+                  <div className={styles.messageText}>{msg.content}</div>
+                )}
+
+                {msg.caption && (
+                  <div className={styles.captionText}>{msg.caption}</div>
+                )}
+
+                {/* ✅ Tick system */}
+                <div className={styles.messageMeta}>
+                  {/* ✅ Sent only */}
+                  {msg.sender.id === user?.id &&
+                    !msg.deliveredAt &&
+                    !msg.readAt && <span className={styles.singleTick}>✓</span>}
+
+                  {/* ✅ Delivered but not read */}
+                  {msg.sender.id === user?.id &&
+                    msg.deliveredAt &&
+                    !msg.readAt && (
+                      <span className={styles.deliveredTick}>✓✓</span>
+                    )}
+
+                  {/* ✅ Read */}
+                  {msg.sender.id === user?.id && msg.readAt && (
+                    <span
+                      className={`${styles.doubleTick} ${styles.doubleTickRead}`}
+                    >
+                      ✓✓
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
-          </header>
+          ))
+        )}
 
-          <div className={styles.messages} ref={listRef}>
-            {messages.map((m) => (
-              <div
-                key={m.id}
-                className={`${styles.messageRow} ${m.fromSelf ? styles.outgoing : styles.incoming}`}
-              >
-                <div className={styles.messageBubble}>
-                  {m.fileName && <div className={styles.fileChip}>{m.fileName}</div>}
-                  {m.text && <div className={styles.messageText}>{m.text}</div>}
-                  <div className={styles.messageMeta}>
-                    <span className={styles.messageTime}>{m.time ?? ""}</span>
-                    {m.fromSelf && renderStatus(m.status)}
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div ref={bottomRef}></div>
+      </div>
+
+      {/* Composer */}
+      <form onSubmit={handleSend} className={styles.composer}>
+        {file && (
+          <div className={styles.filePreview}>
+            <span>{file.name}</span>
+            <button type="button" onClick={() => setFile(null)}>
+              ✕
+            </button>
           </div>
+        )}
 
-          <div className={styles.composer}>
-            {file && (
-              <div className={styles.filePreview}>
-                <span className={styles.fileName}>{file.name}</span>
-                <button
-                  className={styles.removeFile}
-                  onClick={() => {
-                    setFile(null);
-                    setCaption("");
-                    if (fileInputRef.current) fileInputRef.current.value = "";
-                  }}
-                >
-                  ✕
-                </button>
-                {/* 👇 Caption input for uploaded file */}
-                <input
-                  type="text"
-                  className={styles.captionInput}
-                  placeholder="Add a caption..."
-                  value={caption}
-                  onChange={(e) => setCaption(e.target.value)}
-                />
-              </div>
-            )}
+        {file && (
+          <input
+            type="text"
+            className={styles.captionInput}
+            placeholder="Add a caption..."
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+          />
+        )}
 
-            <div className={styles.controls}>
-              <select
-                value={selectedTypeId}
-                onChange={(e) => setSelectedTypeId(Number(e.target.value))}
-                className={styles.typeSelect}
-              >
-                {messageTypes.map((mt) => (
-                  <option key={mt.id} value={mt.id}>
-                    {mt.name.charAt(0).toUpperCase() + mt.name.slice(1)}
-                  </option>
-                ))}
-              </select>
-
-              {selectedType?.name === "text" ? (
-                <input
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                  className={styles.input}
-                  placeholder={`Message ${activeUser.username}...`}
-                  disabled={!activeUser}
-                />
-              ) : (
-                <>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    className={styles.fileInput}
-                    onChange={handleFileChange}
-                    accept={
-                      selectedType?.allowedExtensions
-                        ?.split(",")
-                        .map((x) => `.${x.trim()}`)
-                        .join(",") || ""
-                    }
-                  />
-                  <button
-                    type="button"
-                    className={styles.attachBtn}
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    📎
-                  </button>
-                </>
-              )}
-
+        <div className={styles.controls}>
+          {!["text", "system"].includes(messageType) && (
+            <>
               <button
                 type="button"
-                className={styles.sendBtn}
-                onClick={handleSend}
-                disabled={!activeUser || sending}
+                className={styles.attachBtn}
+                onClick={() => fileInputRef.current?.click()}
               >
-                {sending ? "..." : "Send"}
+                📎
               </button>
-            </div>
-          </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                className={styles.fileInput}
+                onChange={handleFileChange}
+              />
+            </>
+          )}
+
+          <select
+            value={messageType}
+            onChange={(e) => setMessageType(e.target.value)}
+            className={styles.typeSelect}
+            disabled={typesLoading}
+          >
+            {typesError && <option>Error loading types</option>}
+            {!typesError &&
+              messageTypes.map((type) => (
+                <option key={type.id} value={type.name.toLowerCase()}>
+                  {type.name}
+                </option>
+              ))}
+          </select>
+
+          <input
+            type="text"
+            className={styles.input}
+            placeholder="Type a message..."
+            value={input}
+            disabled={messageType !== "text"}
+            onChange={(e) => setInput(e.target.value)}
+          />
+
+          <button type="submit" className={styles.sendBtn}>
+            Send
+          </button>
         </div>
-      )}
-    </>
+      </form>
+    </div>
   );
 }

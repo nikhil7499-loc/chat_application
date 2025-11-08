@@ -3,7 +3,7 @@ import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.trim() || window.location.origin;
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.trim() || window.location.origin;
 const WS_ENDPOINT = `${API_BASE_URL}/ws`; 
 
 export const api = axios.create({

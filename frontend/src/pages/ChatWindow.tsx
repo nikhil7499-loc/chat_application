@@ -1,25 +1,37 @@
 import { useState } from "react";
-import UsersPanel from "../components/UsersPanel/UsersPanel";
 import ChatArea from "../components/ChatArea/ChatArea";
-import styles from "./PageStyle.module.css";
-import type { ChatUser } from "../components/ChatArea/ChatArea";
+import UsersPanel from "../components/UsersPanel/UsersPanel";
 import { MessageTypesProvider } from "../context/MessageTypeContext";
+import styles from "./PageStyle.module.css";
 
 export default function ChatWindow() {
-  const [activeUser, setActiveUser] = useState<ChatUser | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [selectedUsername, setSelectedUsername] = useState<string>("");
+
+  /** 🔹 When a user is clicked in UsersPanel */
+  const handleSelectUser = (userId: string, username?: string) => {
+    setSelectedUserId(userId);
+    if (username) setSelectedUsername(username);
+  };
 
   return (
     <div className={styles.chatCont}>
-      {/* 🔹 Left side – User list */}
-      <UsersPanel onSelectUser={setActiveUser} selectedUserId={activeUser?.id} />
+      {/* Left panel: user list */}
+      <UsersPanel
+        onSelectUser={(userId) => {
+          // Find the user object (optional if you want to show name)
+          // You could modify UsersPanel’s onSelectUser to also pass username
+          // But for now we’ll just pass id
+          handleSelectUser(userId);
+        }}
+        selectedUserId={selectedUserId}
+      />
 
-      {/* 🔹 Right side – Chat area */}
+      {/* Right panel: chat area */}
       <MessageTypesProvider>
         <ChatArea
-          activeUser={activeUser}
-          onSend={async ({ text, file }) => {
-            console.log("📨 Sent message to", activeUser?.username, { text, file });
-          }}
+          selectedUserId={selectedUserId}
+          selectedUsername={selectedUsername}
         />
       </MessageTypesProvider>
     </div>

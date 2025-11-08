@@ -1,5 +1,6 @@
 package com.ChatApp.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     boolean existsByEmail(String email);
     boolean existsByUsername(String username);
+
+    // 🔍 For user search (used in sidebar new chat feature)
+    List<User> findByUsernameContainingIgnoreCase(String username);
 }
