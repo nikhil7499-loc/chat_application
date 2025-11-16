@@ -84,18 +84,13 @@ public class AuthController {
 
         authBal.logout(response);
         return ResponseEntity.ok("logged out successfully.");
-    }
-
-
-
-    
+    }    
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotpassword(@RequestBody userRequest.resetPasswordRequest request){
         String otp=authBal.forgotPassword(request.getEmail());
         return ResponseEntity.ok("OTP sent to your email:");
     }
-
 
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequstBody UserRequest.resetPasswordRequest request){
@@ -105,8 +100,8 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    @IsAuthenticatedUser
-public ResponseEntity<?> getAuthenticatedUser(@Current User user){
-    return ResponseEntity.ok(new UserResponses.userResponse(user));
-}
+    @IsAuthenticatedUser    
+    public ResponseEntity<?> getAuthenticatedUser(@Current User user){
+        return ResponseEntity.ok(new UserResponses.userResponse(user));
+    }
 }
