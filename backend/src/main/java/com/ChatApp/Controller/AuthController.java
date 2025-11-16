@@ -62,7 +62,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequsetBody UserRequest.loginRequest req,HttpServletResponse Response){
+    public ResponseEntity<?> login(@RequsetBody UserRequest.Login req,HttpServletResponse Response){
         try{
             String token=authBal.login(req.getEmailOrUsername(),req.getPassword(),response);
             return ResponseEntity.ok(Map.of(
@@ -87,13 +87,13 @@ public class AuthController {
     }    
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotpassword(@RequestBody userRequest.resetPasswordRequest request){
+    public ResponseEntity<?> forgotpassword(@RequestBody userRequest.ForgotPassword request){
         String otp=authBal.forgotPassword(request.getEmail());
         return ResponseEntity.ok("OTP sent to your email:");
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequstBody UserRequest.resetPasswordRequest request){
+    public ResponseEntity<?> resetPassword(@RequstBody userRequest.resetPasswordRequest request){
         authBal.resetPassword(request.getEmail(),request.getOtp(),request.getNewPassword());
         return ResponseEntity.ok("password reset successfully.");
         
