@@ -2,6 +2,8 @@ package com.ChatApp.Controllers;
 
 import java.net.ResponseCache;
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.Map;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 
 import com.ChatApp.Models.Requests.UserRequests;
 import com.ChatApp.BusinessAccess.AuthBal;
@@ -51,16 +54,15 @@ public class AuthController {
                 }
                 if(req.getDateOfBirth()!=null && !req.getDateOfBirth().isEmpty()){
                     try{
-                        user.setDate_of_birth(LocalDate.parse(req.getDateOfBirth()));
-
+                        user.setDate_of_birth(new Date(req.getDateOfBirth()));
                     }
                     catch(Exception e){
                         return ResponseEntity.badRequest().body("invalid date formate . use ISO 8601 (e.g. 2000-05-25)");
                     }
                 }
 
-                User createdUser=authbal.signup(user);
-                return ResponseEntity.ok(new UserResponse.UserResponse(createdUser));
+                User createdUser=authBal.signup(user);
+                return ResponseEntity.ok(new UserResponses.UserResponse(createdUser));
 
         }catch(Exception e){
             return ResponseEntity.badRequest().body("Error: "+e.getMessage());
@@ -76,11 +78,11 @@ public class AuthController {
                 "token", token
             ));
         }
-        catch(unauthorizedException e){
+        catch(ResourceAccessException e){
             return ResponseEntity.status(401).body(e.getMessage());
             
         }catch(Exception e){
-            return ResponseEntity.internalserverError().body("Error:"+e.getMessage());
+            return ResponseEntity.internalServerError().body("Error:"+e.getMessage());
         }
     }
 
@@ -106,7 +108,7 @@ public class AuthController {
 
     @GetMapping("/me")
     @IsAuthenticatedUser    
-    public ResponseEntity<?> getAuthenticatedUser(@Current User user){
+    public ResponseEntity<?> getAuthenticatedUser(@CurrentUser User user){
         return ResponseEntity.ok(new UserResponses.userResponse(user));
     }
 }
