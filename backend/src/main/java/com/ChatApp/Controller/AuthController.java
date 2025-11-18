@@ -42,7 +42,7 @@ public class AuthController {
 
                 if(req.getGender()!=null){
                     try{
-                        user.setGender(user.Gender.valueof(req.getGender().toLowecase()));
+                        user.setGender(User.Gender.valueOf(req.getGender().toLowerCase()));
 
                     }
                     catch(IllegalArgumentException e){
