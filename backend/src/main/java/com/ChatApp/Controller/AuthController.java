@@ -6,12 +6,18 @@ import java.time.LocalDate;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.ChatApp.Models.Requests.UserRequest;
+import com.ChatApp.Models.Requests.UserRequests;
 import com.ChatApp.BusinessAccess.AuthBal;
 import com.ChatApp.Entities.User;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 
 @RestController
@@ -26,7 +32,7 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody UserRequest.Signup req){
+    public ResponseEntity<?> signup(@RequestBody UserRequests.SignupRequest req){
         try{
             User user = new User();
             user.setUsername(req.getUsername());
@@ -62,7 +68,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequsetBody UserRequest.Login req,HttpServletResponse Response){
+    public ResponseEntity<?> login(@RequestBody UserRequests.LoginRequest req,HttpServletResponse Response){
         try{
             String token=authBal.login(req.getEmailOrUsername(),req.getPassword(),response);
             return ResponseEntity.ok(Map.of(
@@ -78,22 +84,21 @@ public class AuthController {
         }
     }
 
-
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletResonse response){
+    public ResponseEntity<?> logout(HttpServletResponse response){
 
         authBal.logout(response);
         return ResponseEntity.ok("logged out successfully.");
     }    
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotpassword(@RequestBody userRequest.ForgotPassword request){
+    public ResponseEntity<?> forgotpassword(@RequestBody UserRequests.ForgotPasswordRequest request){
         String otp=authBal.forgotPassword(request.getEmail());
         return ResponseEntity.ok("OTP sent to your email:");
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequstBody userRequest.resetPasswordRequest request){
+    public ResponseEntity<?> resetPassword(@RequestBody UserRequests.ResetPasswordRequest request){
         authBal.resetPassword(request.getEmail(),request.getOtp(),request.getNewPassword());
         return ResponseEntity.ok("password reset successfully.");
         
