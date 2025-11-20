@@ -1,11 +1,8 @@
 package com.ChatApp.Controllers;
 
-import java.net.ResponseCache;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 import com.ChatApp.Models.Requests.UserRequests;
 import com.ChatApp.BusinessAccess.AuthBal;
 import com.ChatApp.Entities.User;
+import com.ChatApp.Models.Responses.UserResponses;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -70,9 +67,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserRequests.LoginRequest req,HttpServletResponse Response){
+    public ResponseEntity<?> login(@RequestBody UserRequests.LoginRequest req,HttpServletResponse response){
         try{
-            String token=authBal.login(req.getEmailOrUsername(),req.getPassword(),response);
+            String token=authBal.login(req.getEmailOrUsername(), req.getPassword(), response);
             return ResponseEntity.ok(Map.of(
                 "message","login succesful",
                 "token", token
@@ -95,8 +92,9 @@ public class AuthController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotpassword(@RequestBody UserRequests.ForgotPasswordRequest request){
-        String otp=authBal.forgotPassword(request.getEmail());
-        return ResponseEntity.ok("OTP sent to your email:");
+        String otp = authBal.forgotPassword(request.getEmail());
+        System.out.println("this is otp: "+otp);
+        return ResponseEntity.ok("OTP sent to your email");
     }
 
     @PostMapping("/reset-password")
@@ -109,6 +107,6 @@ public class AuthController {
     @GetMapping("/me")
     @IsAuthenticatedUser    
     public ResponseEntity<?> getAuthenticatedUser(@CurrentUser User user){
-        return ResponseEntity.ok(new UserResponses.userResponse(user));
+        return ResponseEntity.ok(new UserResponses.UserResponse(user));
     }
 }
