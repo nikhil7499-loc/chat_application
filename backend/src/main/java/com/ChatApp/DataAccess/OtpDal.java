@@ -4,13 +4,14 @@ import java.time.Instant;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ChatApp.Entities.Otp;
 import com.ChatApp.Entities.User;
 import com.ChatApp.Repository.OtpRepository;
 
-
+@Component
 public class OtpDal {
     private OtpRepository otpRepository;
 

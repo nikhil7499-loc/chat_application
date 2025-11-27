@@ -3,9 +3,10 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -36,20 +37,21 @@ public class User {
     @Column(nullable=false, unique=true)
     private String email;
 
-    @Column(nullable=false)
-    private Date date_of_birth;
+    @Column(nullable=false, name="date_of_birth")
+    private Date DateOfBirth;
 
-    @Column(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
+    @Column(name="gender")
     private Gender gender;
 
-    @Column(length=128)
-    private String profile_picture;
+    @Column(length=128, name="profile_picture")
+    private String ProfilePicture;
 
-    @Column(nullable=false, columnDefinition="TIMESTAMP")
-    private Instant created_at;
+    @Column(nullable=false, columnDefinition="TIMESTAMP", name="created_at")
+    private Instant CreatedAt;
 
-    @Column(columnDefinition="TIMESTAMP")
-    private Instant updated_at;
+    @Column(columnDefinition="TIMESTAMP", name="updated_at")
+    private Instant UpdatedAt;
 
     @PrePersist
     public void onCreate(){
@@ -58,14 +60,14 @@ public class User {
         }
 
         Instant nowUtc=Instant.now();
-        this.created_at=nowUtc;
-        this.updated_at=nowUtc;
+        this.CreatedAt=nowUtc;
+        this.UpdatedAt=nowUtc;
     }
 
     @PreUpdate
     public void onUpdate(){
         Instant nowUtc=Instant.now();
-        this.updated_at=nowUtc;
+        this.UpdatedAt=nowUtc;
     }
 
     public String getId(){
@@ -100,12 +102,12 @@ public class User {
         this.email = email;
     }
 
-    public Date getDate_of_birth() {
-        return date_of_birth;
+    public Date getDateOfBirth() {
+        return DateOfBirth;
     }
 
-    public void setDate_of_birth(Date date_of_birth) {
-        this.date_of_birth = date_of_birth;
+    public void setDateOfBirth(Date date_of_birth) {
+        this.DateOfBirth = date_of_birth;
     }
 
     public Gender getGender() {
@@ -116,28 +118,28 @@ public class User {
         this.gender = gender;
     }
 
-    public String getProfile_picture() {
-        return profile_picture;
+    public String getProfilePicture() {
+        return ProfilePicture;
     }
 
-    public void setProfile_picture(String profile_picture) {
-        this.profile_picture = profile_picture;
+    public void setProfilePicture(String profile_picture) {
+        this.ProfilePicture = profile_picture;
     }
 
-    public Instant getCreated_at() {
-        return created_at;
+    public Instant getCreatedAt() {
+        return CreatedAt;
     }
 
-    public void setCreated_at(Instant created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Instant created_at) {
+        this.CreatedAt = created_at;
     }
 
-    public Instant getUpdated_at() {
-        return updated_at;
+    public Instant getUpdatedAt() {
+        return UpdatedAt;
     }
 
-    public void setUpdated_at(Instant updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(Instant updated_at) {
+        this.UpdatedAt = updated_at;
     }
 
 }

@@ -87,11 +87,11 @@ public class Otp {
         this.is_used = is_used;
     }
 
-    public Instant getCreated_at() {
+    public Instant getCreatedAt() {
         return created_at;
     }
 
-    public void setCreated_at(Instant created_at) {
+    public void setCreatedAt(Instant created_at) {
         this.created_at = created_at;
     }
 

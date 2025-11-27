@@ -1,7 +1,5 @@
 package com.ChatApp.Models.Responses;
 
-import java.time.ZoneOffset;
-import com.ChatApp.Entities.User;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -23,9 +21,9 @@ public class UserResponses {
 
             // enum(User.Gender)
             this.gender=(user.getGender()!=null)? user.getGender().name():null;
-            this.profilePicture=user.getProfile_picture();
+            this.profilePicture=user.getProfilePicture();
 
-            this.createdAt=(user.getCreated_at() !=null)? LocalDateTime.ofInstant(user.getCreated_at(),ZoneId.systemDefault()):null;
+            this.createdAt=(user.getCreatedAt() !=null)? LocalDateTime.ofInstant(user.getCreatedAt(),ZoneId.systemDefault()):null;
         }
       
      public String getId() {
@@ -53,5 +51,5 @@ public class UserResponses {
         }
 
     }
-3
+
 }

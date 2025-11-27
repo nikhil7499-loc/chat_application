@@ -39,8 +39,8 @@ public class UserBal {
     public User updateUser(User user) {
         User existing = userDal.findById(user.getId());
         existing.setUsername(user.getUsername());
-        existing.setProfile_picture(user.getProfile_picture());
-        existing.setDate_of_birth(user.getDate_of_birth());
+        existing.setProfilePicture(user.getProfilePicture());
+        existing.setDateOfBirth(user.getDateOfBirth());
         existing.setGender(user.getGender());
         return userDal.update(existing);
     }

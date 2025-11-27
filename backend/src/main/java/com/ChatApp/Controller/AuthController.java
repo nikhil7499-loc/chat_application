@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.ResourceAccessException;
 
-import com.ChatApp.Models.Requests.UserRequests;
 import com.ChatApp.BusinessAccess.AuthBal;
 import com.ChatApp.Entities.User;
+import com.ChatApp.Models.Requests.UserRequests;
 import com.ChatApp.Models.Responses.UserResponses;
+import com.ChatApp.Security.CurrentUser;
+import com.ChatApp.Security.IsAuthenticatedUser;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -51,7 +53,7 @@ public class AuthController {
                 }
                 if(req.getDateOfBirth()!=null && !req.getDateOfBirth().isEmpty()){
                     try{
-                        user.setDate_of_birth(new Date(req.getDateOfBirth()));
+                        user.setDateOfBirth(new Date(req.getDateOfBirth()));
                     }
                     catch(Exception e){
                         return ResponseEntity.badRequest().body("invalid date formate . use ISO 8601 (e.g. 2000-05-25)");
@@ -105,7 +107,7 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    @IsAuthenticatedUser    
+    @IsAuthenticatedUser   
     public ResponseEntity<?> getAuthenticatedUser(@CurrentUser User user){
         return ResponseEntity.ok(new UserResponses.UserResponse(user));
     }
