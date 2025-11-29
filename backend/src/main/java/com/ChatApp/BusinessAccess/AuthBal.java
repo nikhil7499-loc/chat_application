@@ -44,7 +44,7 @@ public class AuthBal{
         UserBal userBal,
         OtpDal otpDal,
         @Value("${jwt.secret-key}") String secretKeyValue,
-        @Value("${jwt.expiration-minutes:60") long expirationMinutes
+        @Value("${jwt.expiration-minutes:60}") long expirationMinutes
     ){
         this.userBal = userBal;
         this.otpDal=otpDal;
@@ -121,8 +121,8 @@ public class AuthBal{
         Otp otp = new Otp();
         otp.setUser(user);
         otp.setCode(otpCode);
-        otp.setExpires_at(Instant.now().plusSeconds(OTP_EXPIRY_MINUTES*60));
-        otp.setIs_used(false);
+        otp.setExpiresAt(Instant.now().plusSeconds(OTP_EXPIRY_MINUTES*60));
+        otp.setIsUsed(false);
         otpDal.save(otp);
 
         return otpCode;
@@ -145,17 +145,17 @@ public class AuthBal{
 
         Otp otp = otpOpt.get();
 
-        if(otp.isIs_used()){
+        if(otp.GetIsUsed()){
             throw new DuplicateResourceException("Otp is invalid");
         }
 
-        if(otp.getExpires_at().isBefore(Instant.now())){
+        if(otp.getExpiresAt().isBefore(Instant.now())){
             throw new DuplicateResourceException("Otp has expired");
         }
 
         userBal.updatePassword(user, newPassword);
 
-        otp.setIs_used(true);
+        otp.setIsUsed(true);
         otpDal.save(otp);
     }
 

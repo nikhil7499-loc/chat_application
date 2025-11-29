@@ -4,8 +4,6 @@ package com.ChatApp.Entities;
 import java.time.Instant;
 import java.util.UUID;
 
-import com.ChatApp.Entities.User;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,14 +33,14 @@ public class Otp {
     )
     private User user;
 
-    @Column(nullable=false)
-    private boolean is_used=false;
+    @Column(nullable=false, name="is_used")
+    private boolean isUsed=false;
 
-    @Column(nullable=false, columnDefinition="TIMESTAMP")
-    private Instant created_at;
+    @Column(nullable=false, columnDefinition="TIMESTAMP", name="created_at")
+    private Instant createdAt;
 
-    @Column(columnDefinition="TIMESTAMP",nullable=false)
-    private Instant expires_at;
+    @Column(columnDefinition="TIMESTAMP",nullable=false, name="expires_at")
+    private Instant expiresAt;
 
     @PrePersist
     public void onCreate(){
@@ -51,7 +49,7 @@ public class Otp {
         }
 
         Instant nowUtc=Instant.now();
-        this.created_at=nowUtc;
+        this.createdAt=nowUtc;
     }
 
 
@@ -79,28 +77,28 @@ public class Otp {
         this.user = user;
     }
 
-    public boolean isIs_used() {
-        return is_used;
+    public boolean GetIsUsed() {
+        return isUsed;
     }
 
-    public void setIs_used(boolean is_used) {
-        this.is_used = is_used;
+    public void setIsUsed(boolean is_used) {
+        this.isUsed = is_used;
     }
 
     public Instant getCreatedAt() {
-        return created_at;
+        return createdAt;
     }
 
     public void setCreatedAt(Instant created_at) {
-        this.created_at = created_at;
+        this.createdAt = created_at;
     }
 
-    public Instant getExpires_at() {
-        return expires_at;
+    public Instant getExpiresAt() {
+        return expiresAt;
     }
 
-    public void setExpires_at(Instant expires_at) {
-        this.expires_at = expires_at;
+    public void setExpiresAt(Instant expires_at) {
+        this.expiresAt = expires_at;
     }
 
 }
