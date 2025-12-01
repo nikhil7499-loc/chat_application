@@ -1,3 +1,13 @@
+package com.ChatApp.config;
+
+
+
+
+
+
+
+
+
 @Configuration
 @EnablewebSecurity
 
@@ -5,7 +15,7 @@ public class SecurityConfig {
     @Value("${app.cors.allowed-original}")
     private String[] allowedOrigins;
 
-    private final JwtAuthenticationfilter jwtAuthenticationfilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfig(JwtAuthenticationfilter jwtAuthenticationfilter){
         this.jwtAuthenticationFilter=jwtAuthenticationFilter;
