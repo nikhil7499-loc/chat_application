@@ -1,5 +1,6 @@
 package com.ChatApp.Controllers;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Map;
 
@@ -53,7 +54,8 @@ public class AuthController {
                 }
                 if(req.getDateOfBirth()!=null && !req.getDateOfBirth().isEmpty()){
                     try{
-                        user.setDateOfBirth(new Date(req.getDateOfBirth()));
+                        LocalDate dob = LocalDate.parse(req.getDateOfBirth());
+                        user.setDateOfBirth(java.sql.Date.valueOf(dob));
                     }
                     catch(Exception e){
                         return ResponseEntity.badRequest().body("invalid date formate . use ISO 8601 (e.g. 2000-05-25)");
@@ -71,6 +73,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserRequests.LoginRequest req,HttpServletResponse response){
         try{
+            System.out.println("request email or username: "+req.getEmailOrUsername());
             String token=authBal.login(req.getEmailOrUsername(), req.getPassword(), response);
             return ResponseEntity.ok(Map.of(
                 "message","login succesful",
