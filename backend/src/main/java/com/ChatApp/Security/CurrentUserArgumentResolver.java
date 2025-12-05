@@ -13,20 +13,20 @@ import jakarta.servlet.http.HttpServletRequest;
 @Component
 public class CurrentUserArgumentResolver implements HandlerMethodArgumentResolver {
 
-@Override
-public boolean supportsParameter(MethodParameter parameter) {
-     return parameter.hasParameterAnnotation(CurrentUser.class)
-        && User.class.isAssignableFrom(parameter.getParameterType());
+    @Override
+    public boolean supportsParameter(MethodParameter parameter) {
+        return parameter.hasParameterAnnotation(CurrentUser.class)
+                && User.class.isAssignableFrom(parameter.getParameterType());
     }
 
     @Override
     public Object resolveArgument(
-        MethodParameter parameter,
-        ModelAndViewContainer mavContainer,
-        NativeWebRequest webRequest,
-        org.springframework.web.bind.support.WebDataBinderFactory binderFactory) {
+            MethodParameter parameter,
+            ModelAndViewContainer mavContainer,
+            NativeWebRequest webRequest,
+            org.springframework.web.bind.support.WebDataBinderFactory binderFactory) {
 
-    HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-   return request.getAttribute("currentUser");
+        HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
+        return request.getAttribute("currentUser");
     }
 }

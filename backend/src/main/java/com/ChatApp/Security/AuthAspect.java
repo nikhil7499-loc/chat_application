@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.ChatApp.BusinessAccess.AuthBal;
 import com.ChatApp.Entities.User;
-import com.ChatApp.Exceptions.ResourceNotFoundException;
+import com.ChatApp.Exceptions.UnauthorizedException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -26,7 +26,7 @@ public class AuthAspect {
     public void checkAuthentication() {
         User user = authBal.getAuthenticatedUser(request);
         if (user == null) {
-            throw new ResourceNotFoundException("Not authenticated");
+            throw new UnauthorizedException("Not authenticated");
         }
         request.setAttribute("currentUser", user);
     }

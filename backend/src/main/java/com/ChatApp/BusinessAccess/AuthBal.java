@@ -10,8 +10,6 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Random;
 
-import jakarta.servlet.http.Cookie;
-
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -23,11 +21,13 @@ import com.ChatApp.Entities.Otp;
 import com.ChatApp.Entities.User;
 import com.ChatApp.Exceptions.DuplicateResourceException;
 import com.ChatApp.Exceptions.ResourceNotFoundException;
+import com.ChatApp.Exceptions.UnauthorizedException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -59,7 +59,7 @@ public class AuthBal{
     public String login(String emailOrUsername, String password, HttpServletResponse response){
 
         if(!userBal.verifyCredentials(emailOrUsername, password)){
-            throw new ResourceNotFoundException("invalid username or password");
+            throw new UnauthorizedException("invalid username or password");
         }
         Optional<User> optUser = userBal.getuserByEmail(emailOrUsername);
         String token = generateJwt(optUser.get().getId());
