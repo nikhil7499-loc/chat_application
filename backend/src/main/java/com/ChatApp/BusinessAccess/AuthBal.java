@@ -107,7 +107,7 @@ public class AuthBal{
     public String forgotPassword(String email){
         Optional<User> userOpt = userBal.getuserByEmail(email);
         if(userOpt.isEmpty()){
-            throw new ResourceNotFoundException("User not found");
+            throw new UnauthorizedException("No Account found with this email");
         }
 
         User user = userOpt.get();
@@ -132,7 +132,7 @@ public class AuthBal{
         Optional<User> userOpt = userBal.getuserByEmail(email);
 
         if(userOpt.isEmpty()){
-            throw new ResourceNotFoundException("User not found");
+            throw new UnauthorizedException("No Account found with this email");
         }
 
         User user = userOpt.get();
@@ -140,7 +140,7 @@ public class AuthBal{
         Optional<Otp> otpOpt = otpDal.getByCodeAndUser(otpCode, user);
 
         if(otpOpt.isEmpty()){
-            throw new ResourceNotFoundException("otp not found please try again");
+            throw new ResourceNotFoundException("Invalid OTP");
         }
 
         Otp otp = otpOpt.get();
@@ -150,7 +150,7 @@ public class AuthBal{
         }
 
         if(otp.getExpiresAt().isBefore(Instant.now())){
-            throw new DuplicateResourceException("Otp has expired");
+            throw new UnauthorizedException("Otp has expired");
         }
 
         userBal.updatePassword(user, newPassword);
