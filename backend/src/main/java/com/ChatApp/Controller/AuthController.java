@@ -1,7 +1,6 @@
 package com.ChatApp.Controllers;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class AuthController {
 
                     }
                     catch(IllegalArgumentException e){
-                        return ResponseEntity.badRequest().body("invalid gendser value. Allowed:male,femal,other");
+                        return ResponseEntity.badRequest().body("invalid gender value. Allowed:male,femal,other");
                     }
                 }
                 if(req.getDateOfBirth()!=null && !req.getDateOfBirth().isEmpty()){
