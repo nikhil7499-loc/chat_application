@@ -11,5 +11,16 @@ export const signup = async (username, email, password, date_of_birth, gender) =
 
     const res=await api.post("/auth/signup", user_obj);
 
-    return res
+    return res;
+}
+
+const login = async (emailOrUsername, password)=>{
+    const user_obj = {
+        emailOrUsername: emailOrUsername,
+        password: password
+    }
+
+    const res = await api.post("/auth/login", user_obj);
+
+    return res;
 }

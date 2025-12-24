@@ -1,9 +1,8 @@
-import Signup from './components/Signup/Signup'
-export default function App(){
-
-  return(
+import Signup from "./pages/Signup";
+export default function App() {
+  return (
     <>
-    <Signup/>
+      <Signup />
     </>
-  )
+  );
 }
