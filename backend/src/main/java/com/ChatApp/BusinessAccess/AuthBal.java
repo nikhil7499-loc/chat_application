@@ -1,5 +1,3 @@
-
-
 package com.ChatApp.BusinessAccess;
 
 import java.nio.charset.StandardCharsets;
