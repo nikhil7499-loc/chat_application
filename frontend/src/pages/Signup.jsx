@@ -1,94 +1,89 @@
 import { useState } from "react";
 import { signup } from "../services/auth";
 import styles from "./Page.module.css";
+import { handle } from "express/lib/application";
 
-export default function Signup() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [gender, setGender] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
+export default function Signup({onSwitch}){
+  const {signup}= useUserContext();
+  const[form,setform]=useState<SignupRequest>({
+    username:"",
+    email:"",
+    password:"",
+    name:"",
+    genser:undefined,
+    dateOfBirth:"",
+  });
 
-  const handleSubmit = async (e) => {
+  const [error,setError]=useState<string| null>(null);
+
+  const handleChange=(e)=>{
+    const {name,value}=e.target;
+    setform((prev)=>({
+      ...prev,
+      [name]:
+      name==="gender"?(value)
+    }));
+  };
+  const handeleSignup=async(e)=>{
     e.preventDefault();
-
-    const res = await signup(username, email, password, dateOfBirth, gender);
-
-    if (res.data) {
-      alert("signup successful");
-    } else {
-      alert("there was some error signing up");
+    try{
+      setError(null);
+      await signup(form);
+    }
+    catch{
+      setError("signup failed . please check your details.");
     }
   };
 
+
   return (
-    <div className={styles.cont}>
-      <form onSubmit={handleSubmit}>
+    <div className={styles.pageContainer}>
+      <form onSubmit={handeleSignup}className={styles.formBox}>
+        <h2 className={styles.title}>Create an Account</h2>
         <input
           type="text"
           placeholder="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={form.username}
+          onChange={handleChange}
+          className={styles.input}
+          required
         />
 
         <input
           type="email"
           placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={form.email}
+          onChange={handleChange}
+          className={styles.input}
+          required
         />
 
         <input
           type="password"
           placeholder="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={form.password}
+          onChange={styles.input}
+          required
         />
 
-        <p>Gender:</p>
-        <div>
-          <label>
-            <input
-              type="radio"
-              name="gender"
-              value="male"
-              checked={gender === "male"}
-              onChange={(e) => setGender(e.target.value)}
-            />
-            Male
-          </label>
+         <select name="gender" value={form.gender||""} onChange={handleChange} className={styles.input}>
 
-          <label>
-            <input
-              type="radio"
-              name="gender"
-              value="female"
-              checked={gender === "female"}
-              onChange={(e) => setGender(e.target.value)}
-            />
-            Female
-          </label>
+          <option value="">select gender</option>
+          <option value="male">male</option>
+          <option value="female">female</option>
+          <option value="other">other</option>
+          
+         </select>
+         <input type="date" name="dateOfBirth" onChange={handleChange} className={styles.input}/>
+         {error&&<p className={styles.error}>{error}</p>}
+         <button type="submit" className={styles.button }>signup</button>
 
-          <label>
-            <input
-              type="radio"
-              name="gender"
-              value="other"
-              checked={gender === "other"}
-              onChange={(e) => setGender(e.target.value)}
-            />
-            Other
-          </label>
-        </div>
-
-        <input
-          type="date"
-          value={dateOfBirth}
-          onChange={(e) => setDateOfBirth(e.target.value)}
-        />
-
-        <button type="submit">Signup</button>
-      </form>
-    </div>
-  );
-}
+         <p className={Style.SwitchText}>ALREADY HAVE AN ACCOUNt?{""}
+          <button type="button" onclick={onSwitch} className={styles.switchButton}>
+          login
+          </button>
+          </p>
+          </form>
+          </div>
+      );
+};
