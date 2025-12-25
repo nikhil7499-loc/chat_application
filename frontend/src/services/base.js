@@ -4,6 +4,7 @@ export const base_url = import.meta.env.VITE_BACKEND_URL=="" ? window.location.o
 
 export const api = axios.create(
     {
-        baseURL: `${base_url}/api`
+        baseURL: `${base_url}/api`,
+        withCredentials: true
     }
 )
