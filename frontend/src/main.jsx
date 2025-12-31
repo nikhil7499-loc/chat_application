@@ -6,10 +6,10 @@ import { UserProvider } from './context/UserContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <LoaderProvider>
+    {/* <LoaderProvider> */}
       <UserProvider>
         <App />
       </UserProvider>
-    </LoaderProvider>
+    {/* </LoaderProvider> */}
   </StrictMode>
 )
