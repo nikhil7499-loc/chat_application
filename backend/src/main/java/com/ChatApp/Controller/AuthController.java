@@ -60,7 +60,7 @@ public class AuthController {
                         return ResponseEntity.badRequest().body("invalid date formate . use ISO 8601 (e.g. 2000-05-25)");
                     }
                 }
-
+                
                 User createdUser=authBal.signup(user);
                 return ResponseEntity.ok(new UserResponses.UserResponse(createdUser));
 
