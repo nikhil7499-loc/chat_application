@@ -51,7 +51,7 @@ export default function Signup({ setIsLogin }) {
             />
             <input type="password" name="Password" placeholder="Password"
             value={formData.password}
-            className={styles.password} 
+            className={styles.input} 
             required/>
 
             <select name="gender" value={formData.gender} className={styles.input}>
