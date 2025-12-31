@@ -49,7 +49,7 @@ export default function Signup({ setIsLogin }) {
             className={styles.input}
             required            
             />
-            <input type="password" name="password" placeholder="Password"
+            <input type="password" name="Password" placeholder="Password"
             value={formData.password}
             className={styles.password} 
             required/>
