@@ -18,8 +18,7 @@ export const UserProvider = ({children})=>{
       console.log("this is res from signup: ", res);
     
     }catch(err){
-      setError(err);
-
+      setError(err.message);
     }finally{
       setLoading(false);
     }

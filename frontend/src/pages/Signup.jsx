@@ -3,8 +3,7 @@ import { useUserContext } from "../context/UserContext";
 import styles from "./Page.module.css";
 
 export default function Signup({ setIsLogin }) {
-  const { signup } = useUserContext();
-  const { error } = useUserContext();
+  const { signup , error} = useUserContext();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -84,7 +83,7 @@ export default function Signup({ setIsLogin }) {
         />
 
         {error && <p className={styles.error}>{error}</p>}
-        <button type="submit" className={styles.button}>
+        <button type="submit" className={styles.button} onClick={handleSubmit}>
           sign up
         </button>
         <p className={styles.switchText}>
