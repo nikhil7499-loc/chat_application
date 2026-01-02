@@ -7,12 +7,19 @@ export default function Login({ setIsLogin }) {
   const { login, forgotPassword, resetPassword } = useUserContext();
 
   const [mode, setMode] = useState("login");
+
   const [emailOrUsername, setEmailOrUsername] = useState("");
+
   const [password, setPassword] = useState("");
+
   const [email, setEmail] = useState("");
+
   const [otp, setOtp] = useState("");
+
   const [newPassword, setNewPassword] = useState("");
+
   const [message, setMessage] = useState(null);
+  
   const [error, setError] = useState(null);
 
   const handleLogin = async (e) => {
