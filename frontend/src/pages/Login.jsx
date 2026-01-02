@@ -52,7 +52,7 @@ export default function Login({ setIsLogin }) {
       {error && <p className={styles.error}>{error}</p>}
       {message && <p className={styles.success}>{message}</p>}
 
-      <button type="submit" className={styles.button}>
+      <button type="submit" className={styles.button} onClick={handleLogin}>
         Login
       </button>
 
