@@ -59,7 +59,11 @@ public class AuthBal{
         if(!userBal.verifyCredentials(emailOrUsername, password)){
             throw new UnauthorizedException("invalid username or password");
         }
+
         Optional<User> optUser = userBal.getuserByEmail(emailOrUsername);
+        if(optUser.isEmpty()){
+            optUser=userBal.getuserByUsername(emailOrUsername);
+        }
         String token = generateJwt(optUser.get().getId());
         setAuthCookie(response, token);
         return token;

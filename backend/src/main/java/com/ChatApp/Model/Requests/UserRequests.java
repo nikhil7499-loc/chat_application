@@ -100,24 +100,15 @@ public class UserRequests {
         private String emailOrUsername;
         private String password;
 
-        /**
-         * @return String return the emailOrUsername
-         */
         public String getEmailOrUsername() {
             return emailOrUsername;
         }
-
-        /**
-         * @param emailOrUsername the emailOrUsername to set
-         */
         public void setEmailOrUsername(String emailOrUsername) {
             this.emailOrUsername = emailOrUsername;
         }
-
         public String getPassword() {
             return this.password;
         }
-
         public void setPassword(String password) {
             this.password = password;
         }

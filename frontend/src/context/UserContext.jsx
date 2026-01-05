@@ -12,13 +12,26 @@ export const UserProvider = ({children})=>{
   const signup = async (username, email, gender, date_of_birth, password) =>{
     try{
       setError(null);
-      // make the loader here -- it is in common context
       setLoading(true);
       let res = await AuthApi.signup(username, email, gender, password, date_of_birth);
-      console.log("this is res from signup: ", res);
-    
+      login(email, password);
     }catch(err){
-      setError(err.message);
+      setError(err.response.data.message);
+    }finally{
+      setLoading(false);
+    }
+  }
+
+  const login = async (userOrEmail, password) =>{
+    try{
+      setError(null);
+      setLoading(true);
+      let res = await AuthApi.login(userOrEmail, password);
+
+      console.log(res);
+
+    }catch(err){
+      setError(err.response.data.message);
     }finally{
       setLoading(false);
     }
@@ -30,6 +43,7 @@ export const UserProvider = ({children})=>{
     error,
 
     signup,
+    login
   }
 
   return(

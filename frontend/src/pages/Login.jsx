@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useUserContext } from "../context/UserContext";
+import { useUserContext } from "../context/Usercontext";
 import styles from "./Page.module.css";
 
 
 export default function Login({ setIsLogin }) {
+  
   const { login, forgotPassword, resetPassword } = useUserContext();
 
   const [mode, setMode] = useState("login");
@@ -24,6 +25,9 @@ export default function Login({ setIsLogin }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    await login(emailOrUsername, password);
+
   };
 
   const handleForgotPassword = async (e) => {

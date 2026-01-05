@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useUserContext } from "../context/UserContext";
+import { useUserContext } from "../context/Usercontext";
 import styles from "./Page.module.css";
 
 export default function Signup({ setIsLogin }) {
@@ -21,7 +21,7 @@ export default function Signup({ setIsLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await signup(
+    let res = await signup(
       formData.username,
       formData.email,
       formData.gender,

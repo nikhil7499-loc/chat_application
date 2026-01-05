@@ -12,7 +12,7 @@ export const AuthApi  ={
         };
 
         let res = await api.post("/auth/signup", user_obj);
-        return res.data;
+        return res;
     },
 
     login: async (emailOrUsername, password) =>{
