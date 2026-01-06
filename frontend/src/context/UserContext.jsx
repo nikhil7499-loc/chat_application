@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { AuthApi } from "../services/user";
 
 const UserContext = createContext();
@@ -27,7 +27,7 @@ export const UserProvider = ({children})=>{
       setError(null);
       setLoading(true);
       let res = await AuthApi.login(userOrEmail, password);
-
+      verify_user();
       console.log(res);
 
     }catch(err){
@@ -37,13 +37,34 @@ export const UserProvider = ({children})=>{
     }
   }
 
+  const verify_user = ()=>{
+    AuthApi.getAuthenticatedUser().then((res)=>{
+          setUser(res.data);
+        }).catch((err)=>{
+      setUser(null);
+    })
+  }
+
+  useEffect(()=>{
+    verify_user();
+  }, [])
+
+  const logout = ()=>{
+    AuthApi.logout().then((data)=>{
+      verify_user();
+    }).catch((err)=>{
+      verify_user();
+    })
+  }
+
   const value={
     user,
     loading,
     error,
 
     signup,
-    login
+    login,
+    logout
   }
 
   return(

@@ -33,9 +33,9 @@ export const AuthApi  ={
     },
 
     getAuthenticatedUser: async () => {
-        let res = await api.post("/auth/me");
+        let res = await api.get("/auth/me");
 
-        return res.data;
+        return res;
     },
 
 
