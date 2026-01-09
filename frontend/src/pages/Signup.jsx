@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useUserContext } from "../context/Usercontext";
+import { useUserContext } from "../context/UserContext";
 import styles from "./Page.module.css";
 
 export default function Signup({ setIsLogin }) {
-  const { signup , error} = useUserContext();
+  const { signup , error, loading} = useUserContext();
 
   const [formData, setFormData] = useState({
     username: "",
@@ -84,10 +84,10 @@ export default function Signup({ setIsLogin }) {
 
         {error && <p className={styles.error}>{error}</p>}
         <button type="submit" className={styles.button} onClick={handleSubmit}>
-          sign up
+          {loading ? 'Signing up...' : 'sign up'}
         </button>
         <p className={styles.switchText}>
-          Already have a account?
+          Already have a account?{" "}
           <button type="button" className={styles.switchButton} onClick={()=>setIsLogin(true)}>
             login
           </button>

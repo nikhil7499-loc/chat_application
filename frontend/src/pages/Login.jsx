@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useUserContext } from "../context/Usercontext";
+import { useUserContext } from "../context/UserContext";
 import styles from "./Page.module.css";
 
 
 export default function Login({ setIsLogin }) {
   
-  const { login, forgotPassword, resetPassword } = useUserContext();
+  const { login, forgotPassword, resetPassword , error, loading} = useUserContext();
 
   const [mode, setMode] = useState("login");
 
@@ -21,7 +21,6 @@ export default function Login({ setIsLogin }) {
 
   const [message, setMessage] = useState(null);
   
-  const [error, setError] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -32,10 +31,24 @@ export default function Login({ setIsLogin }) {
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
+    let data = await forgotPassword(email)
+    setMessage(data);
+
+    if(!error){
+      setMode('reset-password');
+    }
   };
+
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
+
+    await resetPassword(email, otp, newPassword);
+
+    if(!error){
+      alert("Password Reset Successful");
+      setMode('login');
+    }
   };
 
   const renderLoginForm = () => (
@@ -64,7 +77,7 @@ export default function Login({ setIsLogin }) {
       {message && <p className={styles.success}>{message}</p>}
 
       <button type="submit" className={styles.button} onClick={handleLogin}>
-        Login
+        {loading ? 'Logging in...' : 'Login'}
       </button>
 
       <p className={styles.switchText}>
@@ -78,7 +91,7 @@ export default function Login({ setIsLogin }) {
       </p>
 
       <p className={styles.switchText}>
-        Don’t have an account? 
+        Don’t have an account?{" "}
         <button
           type="button"
           onClick={()=>setIsLogin(false)}
@@ -108,7 +121,7 @@ export default function Login({ setIsLogin }) {
       {message && <p className={styles.success}>{message}</p>}
 
       <button type="submit" className={styles.button}>
-        Send OTP
+        {loading ? 'sending email...' : 'Send OTP'}
       </button>
 
       <p className={styles.switchText}>

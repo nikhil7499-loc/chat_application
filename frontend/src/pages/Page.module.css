@@ -1,154 +1,169 @@
+/* Page.module.css */
+
+/* ---------- Root Theme ---------- */
+:root {
+  --purple-500: #7c3aed;
+  --purple-400: #8b5cf6;
+  --purple-300: #a78bfa;
+  --purple-100: #ede9fe;
+
+  --bg-main: #0f0a1f;
+  --bg-card: rgba(255, 255, 255, 0.08);
+
+  --text-main: #ffffff;
+  --text-muted: #c7c3e0;
+  --error: #ff6b6b;
+  --success: #22c55e;
+}
+
+/* ---------- Page Layout ---------- */
 .pageContainer {
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(
+    circle at top,
+    #1a1035,
+    var(--bg-main)
+  );
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  width: 100vw;
-  background: #f7f9fc;
-  padding: 3rem 1rem;
-  box-sizing: border-box;
+  padding: 1rem;
 }
 
+/* ---------- Card ---------- */
 .formBox {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background: #fff;
-  padding: 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   width: 100%;
   max-width: 420px;
-  box-sizing: border-box;
-  transition: all 0.3s ease;
-}
-
-/* inputs grouped for flexible layout */
-.inputGroup {
+  background: var(--bg-card);
+  backdrop-filter: blur(18px);
+  border-radius: 18px;
+  padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
+  box-shadow:
+    0 20px 40px rgba(124, 58, 237, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  animation: fadeUp 0.6s ease;
 }
 
+/* ---------- Title ---------- */
+.title {
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+/* ---------- Inputs ---------- */
 .input {
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
   width: 100%;
-  box-sizing: border-box;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-main);
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.input::placeholder {
+  color: var(--text-muted);
 }
 
 .input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+  border-color: var(--purple-400);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.35);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.title {
-  text-align: center;
-  font-size: 1.6rem;
-  margin-bottom: 0.5rem;
-  color: #222;
-}
-
+/* ---------- Button ---------- */
 .button {
-  background: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
+  margin-top: 0.5rem;
   padding: 0.75rem;
-  cursor: pointer;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(
+    135deg,
+    var(--purple-500),
+    var(--purple-400)
+  );
+  color: white;
+  font-size: 0.95rem;
   font-weight: 600;
-  font-size: 1rem;
-  transition: background 0.2s ease;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .button:hover {
-  background: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(124, 58, 237, 0.45);
 }
 
+.button:active {
+  transform: scale(0.98);
+}
+
+/* ---------- Messages ---------- */
 .error {
-  color: red;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  color: var(--error);
   text-align: center;
-  margin-top: -0.5rem;
-}
-
-.switchText {
-  text-align: center;
-  font-size: 0.9rem;
-  color: #444;
-  margin-top: 0.75rem;
-}
-
-.switchButton {
-  background: none;
-  border: none;
-  color: #007bff;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 0.9rem;
-  padding: 0;
-}
-
-/* 💡 Responsive adjustment:
-   When screen height is small (form might overflow),
-   switch to two-column grid so inputs fit better vertically. */
-@media (max-height: 650px) {
-  .formBox {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem 1.5rem;
-    max-width: 680px;
-  }
-
-  .title,
-  .button,
-  .error,
-  .switchText {
-    grid-column: span 2;
-    text-align: center;
-  }
-
-  .input,
-  select,
-  input[type="date"] {
-    width: 100%;
-  }
-}
-
-/* 📱 Small devices */
-@media (max-width: 480px) {
-  .pageContainer {
-    padding: 2rem 1rem;
-  }
-
-  .formBox {
-    padding: 1.5rem 1rem;
-  }
-}
-
-
-.chatCont{
-  display: flex;
 }
 
 .success {
-  color: #28a745;
-  font-size: 0.9rem;
-  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--success);
+  text-align: center;
 }
 
-.linkButton {
+/* ---------- Text Links ---------- */
+.switchText {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Button that looks like a link */
+.linkButton,
+.switchButton {
   background: none;
   border: none;
-  color: #007bff;
+  color: var(--purple-300);
+  font-size: 0.85rem;
   cursor: pointer;
-  font-weight: 600;
   padding: 0;
+  transition: color 0.2s ease;
 }
 
-.linkButton:hover {
+.linkButton:hover,
+.switchButton:hover {
+  color: white;
   text-decoration: underline;
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .formBox {
+    padding: 2rem 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
 }

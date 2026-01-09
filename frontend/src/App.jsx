@@ -7,8 +7,7 @@ import ChatWindow from './pages/ChatWindow'
 
 export default function App() {
   const {user} = useUserContext();
-  const [isLogin, setIsLogin] = useState(false);
-  console.log(user)
+  const [isLogin, setIsLogin] = useState(true);
   if(!user){
     return(
       <>

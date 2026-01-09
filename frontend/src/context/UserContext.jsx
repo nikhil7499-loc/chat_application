@@ -16,7 +16,7 @@ export const UserProvider = ({children})=>{
       let res = await AuthApi.signup(username, email, gender, password, date_of_birth);
       login(email, password);
     }catch(err){
-      setError(err.response.data.message);
+      setError(err.response.data.message || err.response.data);
     }finally{
       setLoading(false);
     }
@@ -28,10 +28,8 @@ export const UserProvider = ({children})=>{
       setLoading(true);
       let res = await AuthApi.login(userOrEmail, password);
       verify_user();
-      console.log(res);
-
     }catch(err){
-      setError(err.response.data.message);
+      setError(err.response.data.message || err.response.data);
     }finally{
       setLoading(false);
     }
@@ -57,6 +55,32 @@ export const UserProvider = ({children})=>{
     })
   }
 
+  const forgotPassword =async (email) => {
+
+    try{
+      setError(null);
+      setLoading(true);
+      const res = await AuthApi.forgotPassword(email)
+    }catch(err){
+      setError(err.response.data.message || err.response.data)
+    }finally{
+      setLoading(false);
+    }
+  }
+
+  const resetPassword =async (email, otp, newPassword) => {
+
+    try{
+      setError(null);
+      setLoading(true);
+      const res = await AuthApi.resetPassword(email, otp, newPassword)
+    }catch(err){
+      setError(err.response.data.message || err.response.data)
+    }finally{
+      setLoading(false);
+    }
+  }
+
   const value={
     user,
     loading,
@@ -64,7 +88,9 @@ export const UserProvider = ({children})=>{
 
     signup,
     login,
-    logout
+    logout,
+    forgotPassword,
+    resetPassword
   }
 
   return(
