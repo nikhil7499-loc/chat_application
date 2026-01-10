@@ -10,6 +10,7 @@ import java.util.Random;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import com.ChatApp.Entities.User;
 import com.ChatApp.Exceptions.DuplicateResourceException;
 import com.ChatApp.Exceptions.ResourceNotFoundException;
 import com.ChatApp.Exceptions.UnauthorizedException;
+import com.ChatApp.Utils.MessagingService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -36,7 +38,10 @@ public class AuthBal{
     private final OtpDal otpDal;
     private final long jwtExpirationMillis;
     private final SecretKey secretKey;
-    private static final int OTP_EXPIRY_MINUTES = 10;  
+    private static final int OTP_EXPIRY_MINUTES = 10; 
+    @Autowired
+    private MessagingService messagingService;
+
 
     public AuthBal(
         UserBal userBal,
@@ -85,7 +90,6 @@ public class AuthBal{
         if(token==null){
             return null;
         }
-
         try {
             Claims claims = Jwts.parserBuilder()
             .setSigningKey(secretKey)
@@ -126,6 +130,10 @@ public class AuthBal{
         otp.setExpiresAt(Instant.now().plusSeconds(OTP_EXPIRY_MINUTES*60));
         otp.setIsUsed(false);
         otpDal.save(otp);
+
+        String message = "Your One Time Password for resetting chat app is "+otpCode+" this will only valid for 10 minutes";
+
+        messagingService.sendEmail(user.getEmail(), "This is your otp for resetting your account", message);
 
         return otpCode;
     }
