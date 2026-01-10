@@ -12,6 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessagingService {
 
+    /**
+     * Run:
+     */
+
     @Value("${mailjet.api.public}")
     private String publicKey;
 
@@ -22,11 +26,12 @@ public class MessagingService {
     private String senderEmail;
 
     public boolean sendEmail(String toEmail, String subject, String body) {
-
         try {
-            MailjetClient client = new MailjetClient(publicKey, privateKey);
-
-            MailjetRequest request = new MailjetRequest(Emailv31.resource)
+            MailjetClient client;
+            MailjetRequest request;
+            MailjetResponse response;
+            client = new MailjetClient(publicKey, privateKey);
+            request = new MailjetRequest(Emailv31.resource)
                     .property(Emailv31.MESSAGES, new JSONArray()
                             .put(new JSONObject()
                                     .put(Emailv31.Message.FROM, new JSONObject()
@@ -34,22 +39,16 @@ public class MessagingService {
                                             .put("Name", "ChatApp"))
                                     .put(Emailv31.Message.TO, new JSONArray()
                                             .put(new JSONObject()
-                                                    .put("Email", toEmail)))
+                                                    .put("Email", toEmail)
+                                                    .put("Name", "You")))
                                     .put(Emailv31.Message.SUBJECT, subject)
                                     .put(Emailv31.Message.TEXTPART, body)
-                                    .put(Emailv31.Message.HTMLPART,
-                                            "<h3>" + body + "</h3>")
                             ));
-
-            MailjetResponse response = client.post(request);
-
-            System.out.println("Mailjet Status: " + response.getStatus());
-            System.out.println(response.getData());
-
-            return response.getStatus() == 200;
+            response = client.post(request);
+            return response.getStatus()==200;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
             return false;
         }
     }

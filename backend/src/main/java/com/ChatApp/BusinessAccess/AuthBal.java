@@ -166,6 +166,7 @@ public class AuthBal{
         userBal.updatePassword(user, newPassword);
 
         otp.setIsUsed(true);
+        messagingService.sendEmail(user.getEmail(), "Password reset successful", "Password has been reset successfully");
         otpDal.save(otp);
     }
 
