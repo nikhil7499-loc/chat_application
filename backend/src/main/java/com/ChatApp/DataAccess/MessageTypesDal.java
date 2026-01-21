@@ -4,16 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ChatApp.Exceptions.DatabaseOperationException;
 import com.ChatApp.Entities.MessageTypes;
+import com.ChatApp.Exceptions.DatabaseOperationException;
 import com.ChatApp.Exceptions.ResourceNotFoundException;
 import com.ChatApp.Repository.MessageTypesRepository;
-import com.mailjet.client.Resource;
-import com.mailjet.client.resource.Message;
 
 public class MessageTypesDal {
 
-    private MessageTypesRepository messageTypesRepository;
+    private final MessageTypesRepository messageTypesRepository;
 
     @Autowired
     public MessageTypesDal(MessageTypesRepository _messageTypesRepository){
@@ -42,8 +40,5 @@ public class MessageTypesDal {
         }catch(Exception e){
             throw new DatabaseOperationException("failed to fetch message type by name",e);
         }
-    }
-
-
-    
+    }    
 }
