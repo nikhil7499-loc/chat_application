@@ -3,12 +3,14 @@ package com.ChatApp.DataAccess;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.ChatApp.Entities.MessageTypes;
 import com.ChatApp.Exceptions.DatabaseOperationException;
 import com.ChatApp.Exceptions.ResourceNotFoundException;
 import com.ChatApp.Repository.MessageTypesRepository;
 
+@Component
 public class MessageTypesDal {
 
     private final MessageTypesRepository messageTypesRepository;
