@@ -1,3 +1,4 @@
+package com.ChatApp.Entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,18 +7,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-
 @Entity
-@Table(name="known_connection")
-public class KnownConnection {
+@Table(name="chat_groups")
+public class ChatGroups{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(nullable=false,updatable=false)
-    private Short id;
+    @Column(name="id",nullable=false,length=36)
+    private Short i;
 
-    @Column(nullable=false,updatable=true,length=256)
+    @Column(nullable=false,length=255)
     private String name;
 
-    @Column(length=256)
+    @Column(name="description",length=500)
     private String description;
+
+    
 }
