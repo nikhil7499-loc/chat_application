@@ -2,9 +2,7 @@ package com.ChatApp.Entities;
 
 import java.lang.annotation.Inherited;
 import java.time.Instant;
-
 import javax.management.relation.Role;
-
 import jakarta.persistence.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -22,7 +20,7 @@ import jakarta.persistence.Table;
 
 public class GroupMember{
     @EmbeddedId
-    private GroupMemberId id =new GroupMemberId();
+    private GroupMemberId id=new GroupMemberId();
 
     @ManyToOne(fetch=FetchType.LAZY)
     @MapsId("groupId")
