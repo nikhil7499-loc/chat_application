@@ -81,4 +81,132 @@ public class KnownConnection {
             isBlocked = false;
         }
     }
+    
+
+    /**
+     * @return String return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * @return User return the user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    /**
+     * @return User return the contact
+     */
+    public User getContact() {
+        return contact;
+    }
+
+    /**
+     * @param contact the contact to set
+     */
+    public void setContact(User contact) {
+        this.contact = contact;
+    }
+
+    /**
+     * @return Instant return the lastMessageAt
+     */
+    public Instant getLastMessageAt() {
+        return lastMessageAt;
+    }
+
+    /**
+     * @param lastMessageAt the lastMessageAt to set
+     */
+    public void setLastMessageAt(Instant lastMessageAt) {
+        this.lastMessageAt = lastMessageAt;
+    }
+
+    /**
+     * @return Boolean return the isBlocked
+     */
+    public Boolean isIsBlocked() {
+        return isBlocked;
+    }
+
+    /**
+     * @param isBlocked the isBlocked to set
+     */
+    public void setIsBlocked(Boolean isBlocked) {
+        this.isBlocked = isBlocked;
+    }
+
+    /**
+     * @return String return the blockedByuserId
+     */
+    public String getBlockedByuserId() {
+        return blockedByuserId;
+    }
+
+    /**
+     * @param blockedByuserId the blockedByuserId to set
+     */
+    public void setBlockedByuserId(String blockedByuserId) {
+        this.blockedByuserId = blockedByuserId;
+    }
+
+    /**
+     * @return Instant return the blockedByUser
+     */
+    public Instant getBlockedByUser() {
+        return blockedByUser;
+    }
+
+    /**
+     * @param blockedByUser the blockedByUser to set
+     */
+    public void setBlockedByUser(Instant blockedByUser) {
+        this.blockedByUser = blockedByUser;
+    }
+
+    /**
+     * @return Boolean return the isFavorite
+     */
+    public Boolean isIsFavorite() {
+        return isFavorite;
+    }
+
+    /**
+     * @param isFavorite the isFavorite to set
+     */
+    public void setIsFavorite(Boolean isFavorite) {
+        this.isFavorite = isFavorite;
+    }
+
+    /**
+     * @return Integer return the unreadCount
+     */
+    public Integer getUnreadCount() {
+        return unreadCount;
+    }
+
+    /**
+     * @param unreadCount the unreadCount to set
+     */
+    public void setUnreadCount(Integer unreadCount) {
+        this.unreadCount = unreadCount;
+    }
+
 }

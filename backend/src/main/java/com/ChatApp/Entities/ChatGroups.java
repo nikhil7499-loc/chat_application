@@ -1,5 +1,7 @@
 package com.ChatApp.Entities;
+import java.time.Instant;
 import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -39,12 +41,12 @@ public class ChatGroups{
     private String description;
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="created_by",nullable=false,)
+    @JoinColumn(name="created_by",nullable=false)
     private User createdBy;
 
     @Column(name="created_at",nullable=false,columnDefinition="timestamp")
     private Instant createdAt;
-    @Column(name="updated_at",nullable=false,columnDefination="timestamp")
+    @Column(name="updated_at",nullable=false,columnDefinition="timestamp")
     private Instant updatedAt;
     
     

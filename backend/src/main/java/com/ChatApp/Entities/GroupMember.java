@@ -25,7 +25,7 @@ public class GroupMember{
     @ManyToOne(fetch=FetchType.LAZY)
     @MapsId("groupId")
     @JoinColumn(name="group_id",nullable=false)
-    private ChatGroup group;
+    private ChatGroups group;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @MapsId("userId")
