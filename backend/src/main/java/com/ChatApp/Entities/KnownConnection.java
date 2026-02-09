@@ -1,5 +1,4 @@
-
-import com.ChatApp.Entities.User;
+package com.ChatApp.Entities;
 
 import java.time.Instant;
 
@@ -45,12 +44,12 @@ public class KnownConnection {
     private Boolean  isBlocked=false;
 
     @Column(name="blocked_by_user_id")
-    private String blockedByuserId;
+    private String blockedByUserId;
 
     @Column(name="blocked_by_user_id")
     private Instant blockedByUser;
 
-    @Column(name="is_faavorite",nullable=false)
+    @Column(name="is_favourite",nullable=false)
     private Boolean isFavorite=false;
     
     @Column(name="unread_count",nullable=false)
@@ -156,15 +155,15 @@ public class KnownConnection {
     /**
      * @return String return the blockedByuserId
      */
-    public String getBlockedByuserId() {
-        return blockedByuserId;
+    public String getBlockedByUserId() {
+        return blockedByUserId;
     }
 
     /**
      * @param blockedByuserId the blockedByuserId to set
      */
-    public void setBlockedByuserId(String blockedByuserId) {
-        this.blockedByuserId = blockedByuserId;
+    public void setBlockedByUserId(String blockedByUserId) {
+        this.blockedByUserId = blockedByUserId;
     }
 
     /**

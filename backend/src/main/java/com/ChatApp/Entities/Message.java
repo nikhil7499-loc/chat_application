@@ -160,14 +160,14 @@ public class Message{
     /**
      * @return string return the caption
      */
-    public string getCaption() {
+    public String getCaption() {
         return caption;
     }
 
     /**
      * @param caption the caption to set
      */
-    public void setCaption(string caption) {
+    public void setCaption(String caption) {
         this.caption = caption;
     }
 
@@ -189,13 +189,13 @@ public class Message{
      * @return User return the mentioUser
      */
     public User getMentioUser() {
-        return mentioUser;
+        return mentionUser;
     }
 
     /**
      * @param mentioUser the mentioUser to set
      */
-    public void setMentionUser(User mentioUser) {
+    public void setMentionUser(User mentionUser) {
         this.mentionUser = mentionUser;
     }
 
