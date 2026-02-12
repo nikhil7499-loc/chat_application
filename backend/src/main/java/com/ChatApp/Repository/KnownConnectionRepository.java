@@ -8,17 +8,29 @@ import org.springframework.stereotype.Repository;
 
 import com.ChatApp.Entities.KnownConnection;
 import com.ChatApp.Entities.User;
-import com.mailjet.client.resource.Contact;
 
 @Repository
 public interface  KnownConnectionRepository extends JpaRepository<KnownConnection,String>{
 
+        // this is for getting connections for a user
         List<KnownConnection> findByUserOrderByIsFavouriteDescLastMessageAtDesc(User user);
+        /*
+                select * from connections where user_id='asdfasdklsdf' order by is_faviourite, last_message_at desc;
+        */
 
+        // this is to check if connection exists
         Optional<KnownConnection>findByUserAndContact(User user,User contact);
 
-        void deleteByUserAndContact(User user,Contact contact);
-        List<KnownConnection>findByUseAndIsBlockedTrue(User user);
-        boolean exitsByUserAndIsBlockedTrue(User user,Contact contact);
+        // delete a connection by user and contact id
+        void deleteByUserAndContact(User user,User contact);
+
+        // who has this user as  a contact
+        List<KnownConnection> findByContact(User contact);
+
+        // get all block contacts
+        List<KnownConnection>findByUserAndIsBlockedTrue(User user);
+
+        // ckeck if the user has blocked a particular contact
+        boolean exitsByUserAndContactAndIsBlockedTrue(User user,User contact);
 }
     

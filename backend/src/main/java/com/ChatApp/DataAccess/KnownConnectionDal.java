@@ -48,9 +48,9 @@ public class KnownConnectionDal {
         }
     }
 
-    public void deletebyUserAndContact(User use,User contact){
+    public void deletebyUserAndContact(User user,User contact){
         try{
-            knownConnectionRepository.existsByUserAndContactAndIsBlockedTrue(User,contact);
+            knownConnectionRepository.deleteByUserAndContact(user, contact);
         }catch(Exception e){
             throw new DatabaseOperationException("Failed to check block status",e);
         }

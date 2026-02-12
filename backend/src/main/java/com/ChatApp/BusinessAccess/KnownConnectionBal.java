@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.ChatApp.DataAccess.KnownConnectionDal;
 
+import com.ChatApp.Entities.KnownConnection;
+
 @Service
 public class KnownConnectionBal {
 
@@ -15,6 +17,8 @@ public class KnownConnectionBal {
         this.KnownConnectionDal = _KnownConnectionDal;
     }
 
-
+    public KnownConnection createConnection(){
+        
+    }
     
 }
