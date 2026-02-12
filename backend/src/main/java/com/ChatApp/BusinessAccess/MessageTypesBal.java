@@ -1,4 +1,4 @@
-package com.ChatApp.BusinessAccess.MessageTypeBal;
+package com.ChatApp.BusinessAccess;
 
 import java.util.List;
 

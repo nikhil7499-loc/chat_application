@@ -17,8 +17,8 @@ public interface  KnownConnectionRepository extends JpaRepository<KnownConnectio
 
         Optional<KnownConnection>findByUserAndContact(User user,User contact);
 
-        void deleteByUserAndContact(User user,User contact);
+        void deleteByUserAndContact(User user,Contact contact);
         List<KnownConnection>findByUseAndIsBlockedTrue(User user);
-        boolean exitsByUserAndIsBlockedTrue(User user,User contact);
+        boolean exitsByUserAndIsBlockedTrue(User user,Contact contact);
 }
     
