@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ChatApp.Entities.Message;
+import com.ChatApp.Entities.MessageBal;
 
 
 @RestController
 @RequestMapping("/mssg")
 public class MessageController {
-    private final Message message;
+    private final MessageBal messageBal;
 
     @Autowired
-    public MessageController(Message message){
-        this.message=message;
+    public MessageController(MessageBal messageBal){
+        this.messageBal=messageBal;
     }
 
     
