@@ -10,5 +10,5 @@ import com.ChatApp.Entities.Message;
 @Repository
 public interface MessageRepository extends JpaRepository<Message,String>{
     List<Message>findBySender (String name);
-    List<Message>findByRecieverOrderBySentAtAsc(String name);    
+    List<Message>findByReceiverOrderBySentAtAsc(String name);    
 }
