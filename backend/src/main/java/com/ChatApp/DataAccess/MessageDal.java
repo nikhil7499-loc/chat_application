@@ -1,4 +1,4 @@
-package com.ChatApp.DataAccess
+package com.ChatApp.DataAccess;
 
 import java.time.Instant;
 import java.util.List;
@@ -36,7 +36,6 @@ public class MessageDal {
     }
 
     // find by sender
-    @Transactional(readOnly = true)
     public List<Message> findBySender(User sender) {
         try {
             return messageRepository.findBySender(sender);
@@ -46,17 +45,15 @@ public class MessageDal {
     }
 
     // find by receiver (keep same DAL function name)
-    @Transactional(readOnly = true)
     public List<Message> findByReceiver(User receiver) {
         try {
-            return messageRepository.findByReceiverOrderBySentAtAsc(receiver);
+            return messageRepository.findByRecieverOrderBySentAtAsc(receiver);
         } catch (Exception e) {
             throw new DatabaseOperationException("failed to fetch message by receiver",e);
         }
     }
 
     //get direct conversation
-    @Transactional(readOnly=true)
     public List<Message> findDirectConversation(String userId,String otherUserId){
         try{
             return messageRepository.findDirectConversation(userId,otherUserId);
@@ -66,7 +63,6 @@ public class MessageDal {
     }
 
     // find by ID
-    @Transactional(readOnly=true)
     public Optional<Message>findById(String id){
         try{
             return messageRepository.findById(id);

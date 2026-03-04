@@ -41,25 +41,21 @@ public class MessageBal {
 
     //get message sent by a user
 
-    @Transactional(readOnly=true)
     public List<Message>getMessageByreceiver(User sender){
         return messageDal.findBySender(sender);
     }
 
     //get direct message received by a user
-    @Transactional(readOnly=true)
     public List<Message> getMessageByReceiver(User receiver){
         return messageDal.findByReceiver(receiver);
     }
 
     //get direct conversation between two users
-    @Transactional(readOnly=true)
     public List<Message>getDirectConversation(String userId,String otherUserId){
-        return messageDal.findById(messageId);
+        return messageDal.findDirectConversation(userId, otherUserId);
     }
 
     //find message by ID
-    @Transactional(readOnly=true)
     public Optional<Message>getMessageById(String messageId){
         return messageDal.findById(messageId);
     }
@@ -70,7 +66,6 @@ public class MessageBal {
     }
 
     //get message type by name
-    @Transactional(readOnly=true)
     public MessageTypes getMessageTypeByName(String typeName){
         return messageTypesDal.findByName(typeName);
     }
@@ -82,8 +77,4 @@ public class MessageBal {
     public int markreadDirect(String senderId,String receiverId){
         return messageDal.bulkMarkReadDirect(senderId, receiverId,Instant.now());
     }
-
-
-
-
 }
